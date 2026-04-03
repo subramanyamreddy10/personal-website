@@ -1,0 +1,670 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>P. Subramanyam Reddy - Data & ML Portfolio</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        /* Custom CSS for smooth transitions and theme variables */
+        html {
+            scroll-behavior: smooth;
+        }
+        :root {
+            /* Light Mode Variables - BLUE THEME */
+            --bg-primary: #FFFFFF;
+            --bg-secondary: #F8F9FA;
+            --text-primary: #212529;
+            --text-secondary: #6C757D;
+            --accent-main: #2563EB; /* Tailwind Blue-600 */
+            --accent-hover: #1D4ED8; /* Tailwind Blue-700 */
+            --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        }
+        .dark {
+            /* Dark Mode Variables - BLUE THEME */
+            --bg-primary: #121212;
+            --bg-secondary: #1E1E1E;
+            --text-primary: #E9ECEF;
+            --text-secondary: #CED4DA;
+            --accent-main: #60A5FA; /* Tailwind Blue-400 (Lighter for contrast) */
+            --accent-hover: #3B82F6; /* Tailwind Blue-500 */
+            --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+        } 
+
+        /* Apply variables */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            transition: background-color 0.3s, color 0.3s;
+        }
+        .card {
+            background-color: var(--bg-secondary);
+            box-shadow: var(--card-shadow);
+            transition: all 0.3s ease-in-out;
+        }
+        /* Global Hover Effect for Cards (Projects/Education) */
+        .card-hover:hover {
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.05);
+        }
+        .dark .card-hover:hover {
+            /* Use a subtle blue glow in dark mode for card hover */
+            box-shadow: 0 10px 20px rgba(96, 165, 250, 0.15); 
+        }
+        
+        /* Specific Hover for About Me Content */
+        .about-hover:hover {
+            transform: scaleX(1.005);
+            box-shadow: 0 8px 12px rgba(0, 0, 0, 0.1);
+        }
+        .dark .about-hover:hover {
+            box-shadow: 0 8px 12px rgba(96, 165, 250, 0.1); /* Subtle blue glow */
+        }
+
+
+        .accent-button {
+            background-color: var(--accent-main);
+            transition: background-color 0.3s, transform 0.2s;
+        }
+        .accent-button:hover {
+            background-color: var(--accent-hover);
+            transform: scale(1.03);
+        }
+        
+        /* === MODIFIED NAVIGATION CSS FOR BACKGROUND HIGHLIGHT HOVER === */
+        .nav-link {
+            transition: color 0.3s, border-bottom 0.3s, background-color 0.3s;
+            cursor: pointer;
+            padding: 0.25rem 0.5rem; /* Added padding for background highlight */
+            border-radius: 0.375rem; /* Added rounded corners */
+        }
+        .nav-link.active {
+            color: var(--accent-main);
+            border-bottom: 2px solid var(--accent-main);
+            padding: 0 0.5rem 0.25rem 0.5rem; /* Adjusted padding to keep border line correct */
+            background-color: transparent; /* Ensure active link doesn't have background */
+        }
+        .nav-link:not(.active):hover {
+            color: var(--text-primary); /* Keeps color legible */
+            background-color: var(--bg-secondary); /* Use the card background for a highlight */
+            border-bottom: none; /* Remove border-bottom on hover for inactive link */
+        }
+        .dark .nav-link:not(.active):hover {
+             /* Slightly transparent white for a glow effect in dark mode */
+            background-color: rgba(255, 255, 255, 0.1); 
+        }
+        /* ============================================================= */
+
+
+        /* Content Sections for Block Navigation */
+        .page-content {
+            min-height: 70vh; /* Ensure sections have vertical space */
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Hide content sections by default - overridden by JS */
+        #content-container > section:not(:first-child) {
+            display: none;
+        }
+
+        /* Header Hover Effect */
+        #navbar {
+            transition: box-shadow 0.3s;
+        }
+        #navbar:hover {
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        }
+        .dark #navbar:hover {
+            box-shadow: 0 8px 16px rgba(96, 165, 250, 0.15); /* Subtle blue shadow in dark mode */
+        }
+
+        /* NEW: Custom class to adjust avatar position (10% from top) */
+        .avatar-position-adjust {
+            object-position: 50% 10% !important; 
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <header class="sticky top-0 z-50 shadow-md backdrop-blur-md bg-opacity-90 py-4 transition-colors duration-300" id="navbar">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center">
+            <a href="#" id="home-button" class="text-2xl font-bold tracking-tight" style="color: var(--accent-main);">PSR</a>
+            
+            <nav class="hidden md:flex space-x-2" id="main-nav">
+    <a class="nav-link font-medium active" data-section-id="about-section">About Me</a>
+    <a class="nav-link font-medium" data-section-id="skills-section">Skills</a>
+    <a class="nav-link font-medium" data-section-id="projects-section"> Graduation Projects</a>
+    <a class="nav-link font-medium" data-section-id="articles-section">Articles</a> 
+    <a class="nav-link font-medium" data-section-id="education-section">Education</a>
+</nav>
+
+            <div class="flex items-center space-x-4">
+                
+                <a href="https://www.linkedin.com/in/subramanyam-reddy-5462b1202/" target="_blank" class="p-2 rounded-full transition-colors duration-300 hover:bg-opacity-80" style="color: var(--accent-main); background-color: var(--bg-secondary);">
+                    <i data-lucide="linkedin" class="w-5 h-5"></i>
+                </a>
+
+                <a id="resume-button" href="https://drive.google.com/file/d/1E0b-Ri0pVHNx3dINfKKZcbNdmBx7HfP7/view?usp=sharing" target="_blank" class="accent-button text-white px-4 py-2 rounded-lg font-semibold text-sm shadow-lg hover:shadow-xl transition-all duration-300">
+                    <span class="flex items-center">
+                        <i data-lucide="download" class="w-4 h-4 mr-2"></i>
+                        Download Resume
+                    </span>
+                </a>
+                
+                <button id="theme-toggle" class="p-2 rounded-full transition-colors duration-300 hover:bg-opacity-80" style="color: var(--accent-main); background-color: var(--bg-secondary);">
+                    <i data-lucide="moon" id="theme-icon" class="w-5 h-5"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+
+        <section id="hero" class="text-center py-10 lg:py-16">
+            <div class="inline-block relative mb-8 w-36 h-36 rounded-full overflow-hidden border-4 ring-4 ring-offset-4 ring-offset-current" style="border-color: var(--accent-main); background-color: var(--bg-secondary); ring-color: var(--bg-primary);">
+                <img id="avatar-image" src="bc14d383-539d-4d5e-8980-8ef0ff92e672.jpeg" alt="Subramanyam Reddy Avatar" class="w-full h-full object-cover avatar-position-adjust opacity-100 cursor-pointer">
+            </div>
+
+            <h1 class="text-4xl lg:text-6xl font-extrabold tracking-tight mb-4" style="color: var(--text-primary);">P. Subramanyam Reddy</h1>
+            <p class="text-xl lg:text-2xl mb-8 font-medium" style="color: var(--text-secondary);">
+                Strategic Analyst | Public Policy & Governance | Technical Logic| Analytical Thinker | UPSC Domain Exposure
+            </p>
+            <p class="max-w-3xl mx-auto text-lg mb-10 font-semibold" style="color: var(--text-secondary);">
+                I am a Computer Science graduate who has spent the last two years (2024–2026) acquiring a deep functional understanding of Indian Governance, Economy, and Social Dynamics Through Upsc Preparation. I bridge technical logic with a broad awareness of Public Policy and Sociology to decode shifting community priorities and regional media narratives. Whether analyzing the socio-economic impact of climate volatility or tracking geopolitical shifts in West Asia, I provide the contextual depth required for Media Houses, Policy Think Tanks, and Strategic War Rooms</p>
+            <a data-section-id="articles-section" class="accent-button text-white px-8 py-3 rounded-xl text-lg font-semibold shadow-2xl inline-block transition-all duration-300 cursor-pointer">
+                View My Articles
+            </a>
+        </section>
+
+        <div id="content-container" class="py-10 border-t" style="border-color: var(--bg-secondary);">
+            
+            <section id="about-section" class="page-content py-10">
+                <h2 class="text-4xl font-bold text-center mb-12" style="color: var(--accent-main);">About Me & Core Skills</h2>
+                
+                
+
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-10">
+    <div class="space-y-8 text-lg card p-8 rounded-xl about-hover transition-all duration-300 transform" style="color: var(--text-primary);">
+        <p>
+            I am <strong>Subramanyam Reddy</strong>, a Strategic Analyst bridging <strong>Computer Science logic</strong> with a high-resolution understanding of <strong>Indian Public Policy and Social Dynamics</strong>. I specialize in translating complex datasets into actionable narratives for high-stakes environments.
+        </p>
+
+        <p>
+            With a Technical Foundation Rooted in <strong>IEEE-published Deep Learning research</strong> I moved into an intensive Two-year period (2024–2026) of <strong>UPSC-aligned domain acquisition</strong>. This transition equipped me with a "Generalist-Specialist" Toolkit—combining The Structural Thinking of an engineer with the contextual awareness of a policy analyst.
+        </p>
+
+        <div class="card p-6 rounded-xl border-2 border-dashed" style="border-color: var(--accent-main); background: rgba(96, 165, 250, 0.05);">
+            <p class="font-bold mb-3" style="color: var(--accent-main); text-transform: uppercase; letter-spacing: 0.05em;">Strategic Core & Awareness:</p>
+            <ul class="text-base space-y-3">
+                <li class="flex items-start">
+                    <span class="mr-2">🧩</span>
+                    <span><strong>Social Dynamics & Sociology:</strong> Decoding community priorities, social stratification, and shifting public sentiment.</span>
+                </li>
+                <li class="flex items-start">
+                    <span class="mr-2">📈</span>
+                    <span><strong>Economic & Policy Frameworks:</strong> Analyzing federalism, energy security, and the socio-economic impact of legislative shifts.</span>
+                </li>
+                <li class="flex items-start">
+                    <span class="mr-2">📡</span>
+                    <span><strong>Media & Tech Interaction:</strong> Monitoring regional media narratives and evaluating how emerging technology shapes governance.</span>
+                </li>
+            </ul>
+        </div>
+
+        <p>
+            Whether drafting strategy for <strong>Think Tanks</strong>, monitoring ground-level sentiment and Policy strategy  for <strong>War Rooms and Political Strategy consulting</strong>, or mapping narratives for <strong>Media Houses</strong>, I provide the clarity and depth required to make informed, data-backed decisions.
+        </p>
+    </div>
+
+    
+
+    <div class="card p-8 rounded-xl h-full shadow-lg about-hover transition-all duration-300 transform">
+        <h3 class="text-2xl font-semibold mb-6" style="color: var(--accent-main);">Broad Strategy & Tech Mapping</h3>
+        <div class="relative h-96">
+            <canvas id="skillsChart"></canvas>
+        </div>
+    </div>
+</div>
+
+            </section>
+
+            <section id="skills-section" class="page-content py-10" style="display: none;">
+                <h2 class="text-4xl font-bold text-center mb-12" style="color: var(--accent-main);">Key Skills by Category</h2>
+                <div class="grid grid-cols-1 lg:grid-cols-1 max-w-3xl mx-auto gap-6"> 
+                    <div class="space-y-6">
+                        <div class="card p-6 rounded-xl shadow-lg card-hover">
+                            <h3 class="text-2xl font-semibold mb-4">Strategic & Policy Analysis (The Core)</h3>
+                            <div class="flex flex-wrap gap-2">
+                                <span class="px-3 py-1 bg-teal-600 text-white rounded-full text-sm font-medium">Public Policy & Governance: Indian Constitutional Law, Federalism, and Last-Mile Delivery.</span>
+                                <span class="px-3 py-1 bg-teal-600 text-white rounded-full text-sm font-medium">Sociological Analysis: Sociology of Indian Society and Social Stratification.</span>
+                                <span class="px-3 py-1 bg-teal-600 text-white rounded-full text-sm font-medium">Geopolitical Risk Assessment: International relations (e.g., West Asian Conflict) and Energy Security analysis.</span>
+                                <span class="px-3 py-1 bg-teal-600 text-white rounded-full text-sm font-medium">Legislative Analysis: Evaluating constitutional amendments (e.g., 84th Amendment) and gender-based reservations.</span>
+                                
+                            </div>
+                        </div>
+                        <div class="card p-6 rounded-xl shadow-lg card-hover">
+                            <h3 class="text-2xl font-semibold mb-4">Field-Ready Strategy (The "War Room" Skills)</h3>
+                            <div class="flex flex-wrap gap-2">
+                                <span class="px-3 py-1 bg-indigo-600 text-white rounded-full text-sm font-medium">Sociological Narrative Mapping: Identifying shifting community priorities and power dynamics</span>
+                                <span class="px-3 py-1 bg-indigo-600 text-white rounded-full text-sm font-medium">Ground-Level Sentiment Analysis: Using logical frameworks to gauge regional public opinion.</span>
+                                <span class="px-3 py-1 bg-indigo-600 text-white rounded-full text-sm font-medium">Media Monitoring: Analyzing regional media (Telugu/English) for topic prioritization.</span>
+                                <span class="px-3 py-1 bg-indigo-600 text-white rounded-full text-sm font-medium">Strategic Campaigning: Political strategy and campaign narrative development.</span>
+                            </div>
+                        </div>
+                        <div class="card p-6 rounded-xl shadow-lg card-hover">
+                            <h3 class="text-2xl font-semibold mb-4">Technical Assets (The Logic Layer)</h3>
+                            <div class="flex flex-wrap gap-2">
+                                <span class="px-3 py-1 bg-red-600 text-white rounded-full text-sm font-medium">Deep Learning & NLP: Specifically applied to low-resource languages (Telugu) for news categorization.</span>
+                                <span class="px-3 py-1 bg-red-600 text-white rounded-full text-sm font-medium">Predictive Analytics: Using technical models to track weather patterns and socio-economic climate implications.</span>
+                                <span class="px-3 py-1 bg-red-600 text-white rounded-full text-sm font-medium">Data Programming: Python, SQL, and Pandas applied to logical resource allocation. </span>
+                                <span class="px-3 py-1 bg-red-600 text-white rounded-full text-sm font-medium">Cloud & Deployment: AWS infrastructure used for hosting analytical systems.</span>
+                            </div>
+                        </div>
+                        <div class="card p-6 rounded-xl shadow-lg card-hover">
+                            <h3 class="text-2xl font-semibold mb-4">Cloud & Bussiness Intelligence</h3>
+                            <div class="flex flex-wrap gap-2">
+                                <span class="px-3 py-1 bg-red-600 text-white rounded-full text-sm font-medium">Power BI(Exploring)</span>
+                                <span class="px-3 py-1 bg-red-600 text-white rounded-full text-sm font-medium">Ecomic Driven Research</span>
+                                <span class="px-3 py-1 bg-red-600 text-white rounded-full text-sm font-medium">Tableau (Exploring)</span>
+                                
+                            </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="projects-section" class="page-content py-10" style="display: none;">
+                <h2 class="text-4xl font-bold text-center mb-12" style="color: var(--accent-main);">Key Projects</h2>
+
+                <div class="card-hover card p-8 rounded-xl mb-8 transition-all duration-300 transform cursor-pointer">
+                    <div class="flex justify-between items-start mb-4">
+                        <h3 class="text-2xl font-bold" style="color: var(--accent-main);">NEWS TOPIC CATEGORIZATION ON TELUGU DATASET</h3>
+                        <span class="text-sm font-semibold px-3 py-1 rounded-full bg-yellow-500 text-white">IEEE PAPER</span>
+                    </div>
+                    <p class="mb-4 text-lg" style="color: var(--text-primary);">Implemented Deep Learning Models (BILSTM, LSTM, CNN, GRU) for topic categorization on a Telugu dataset. Features included Bag of Words and TF-IDF, with robust pre-processing techniques.</p>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="px-3 py-1 bg-gray-300 dark:bg-gray-700 text-gray-800 dark:text-gray-200 rounded-full text-sm">Python</span>
+                        <span class="px-3 py-1 bg-gray-300 dark:bg-gray-700 text-gray-800 dark:text-gray-200 rounded-full text-sm">Deep Learning</span>
+                        <span class="px-3 py-1 bg-gray-300 dark:bg-gray-700 text-gray-800 dark:text-gray-200 rounded-full text-sm">FastText/GloVe</span>
+                        <span class="px-3 py-1 bg-gray-300 dark:bg-gray-700 text-gray-800 dark:text-gray-200 rounded-full text-sm">NLP</span>
+                    </div>
+                </div>
+
+                <div class="card-hover card p-8 rounded-xl mb-8 transition-all duration-300 transform cursor-pointer">
+                    <div class="flex justify-between items-start mb-4">
+                        <h3 class="text-2xl font-bold" style="color: var(--accent-main);">Temperature Prediction Using Machine Learning</h3>
+                        <span class="text-sm font-semibold text-gray-500">Jan 2024 - May 2024</span>
+                    </div>
+                    <p class="mb-4 text-lg" style="color: var(--text-primary);">Developed an accurate temperature prediction system. Applied Linear, CatBoost, XGBoost, and LightGBM Regressors after collecting, pre-processing, and performing EDA on weather data. Also developed a user interface (UI).</p>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="px-3 py-1 bg-gray-300 dark:bg-gray-700 text-gray-800 dark:text-gray-200 rounded-full text-sm">Python</span>
+                        <span class="px-3 py-1 bg-gray-300 dark:bg-gray-700 text-gray-800 dark:text-gray-200 rounded-full text-sm">Machine Learning</span>
+                        <span class="px-3 py-1 bg-gray-300 dark:bg-gray-700 text-gray-800 dark:text-gray-200 rounded-full text-sm">Pandas</span>
+                        <span class="px-3 py-1 bg-gray-300 dark:bg-gray-700 text-gray-800 dark:text-gray-200 rounded-full text-sm">Scikit-learn</span>
+                    </div>
+                </div>
+
+                <div class="card-hover card p-8 rounded-xl mb-8 transition-all duration-300 transform cursor-pointer">
+                    <div class="flex justify-between items-start mb-4">
+                        <h3 class="text-2xl font-bold" style="color: var(--accent-main);">Sweet Bakery Website Deployment</h3>
+                        <span class="text-sm font-semibold text-gray-500">Mar 2023 - May 2023</span>
+                    </div>
+                    <p class="mb-4 text-lg" style="color: var(--text-primary);">Developed and deployed an HTML/CSS/JS bakery website on AWS. Managed infrastructure (EC2, web server), configured S3 bucket permissions, DNS, and utilized CloudWatch for monitoring.</p>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="px-3 py-1 bg-gray-300 dark:bg-gray-700 text-gray-800 dark:text-gray-200 rounded-full text-sm">AWS Deployment</span>
+                        <span class="px-3 py-1 bg-gray-300 dark:bg-gray-700 text-gray-800 dark:text-gray-200 rounded-full text-sm">HTML/CSS/JS</span>
+                        <span class="px-3 py-1 bg-gray-300 dark:bg-gray-700 text-gray-800 dark:text-gray-200 rounded-full text-sm">CloudWatch</span>
+                    </div>
+                </div>
+
+                <div class="card-hover card p-8 rounded-xl transition-all duration-300 transform cursor-pointer">
+                    <div class="flex justify-between items-start mb-4">
+                        <h3 class="text-2xl font-bold" style="color: var(--accent-main);">Supermarket Database Management Website</h3>
+                        <span class="text-sm font-semibold text-gray-500">Aug 2022 - Nov 2022</span>
+                    </div>
+                    <p class="mb-4 text-lg" style="color: var(--text-primary);">Built a full-stack e-commerce platform using Database Management concepts (SQL, PHP, HTML, CSS). Included admin and customer portals with features like a shopping cart, order tracking, and product management.</p>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="px-3 py-1 bg-gray-300 dark:bg-gray-700 text-gray-800 dark:text-gray-200 rounded-full text-sm">SQL</span>
+                        <span class="px-3 py-1 bg-gray-300 dark:bg-gray-700 text-gray-800 dark:text-gray-200 rounded-full text-sm">PHP</span>
+                        <span class="px-3 py-1 bg-gray-300 dark:bg-gray-700 text-gray-800 dark:text-gray-200 rounded-full text-sm">Full-Stack</span>
+                    </div>
+                </div>
+            </section>
+
+          <section id="articles-section" class="page-content py-10" style="display: none;">
+    <h2 class="text-4xl font-bold text-center mb-12" style="color: var(--accent-main);">Strategic Briefs & Publications</h2>
+    
+    <div class="max-w-4xl mx-auto space-y-8">
+        <div class="card-hover card p-8 rounded-xl transition-all duration-300 transform cursor-pointer border-l-4 border-red-600">
+            <div class="flex justify-between items-start mb-4">
+                <h3 class="text-2xl font-bold" style="color: var(--accent-main);">Strategic Analysis: The 2026 West Asian Conflict</h3>
+                <span class="text-sm font-semibold px-3 py-1 rounded-full bg-red-600 text-white">Geopolitical Risk</span>
+            </div>
+            <p class="mb-4 text-lg" style="color: var(--text-primary);">
+                Geopolitical Shifts in the Middle East: Implications for
+
+India’s Economy & Diplomacy.
+            </p>
+            <a href="https://drive.google.com/file/d/1OY4TS4ouFfe418tk5WQmsc3ZMPXzN7gy/view?usp=drive_link" target="_blank" class="text-sm font-bold flex items-center hover:underline" style="color: var(--accent-main);">
+                Read Strategy Report <i data-lucide="external-link" class="w-4 h-4 ml-1"></i>
+            </a>
+        </div>
+
+        
+
+        <div class="card-hover card p-8 rounded-xl transition-all duration-300 transform cursor-pointer">
+            <div class="flex justify-between items-start mb-4">
+                <h3 class="text-2xl font-bold" style="color: var(--accent-main);">News Topic Categorization on Telugu Dataset</h3>
+                <span class="text-sm font-semibold px-3 py-1 rounded-full bg-blue-600 text-white">IEEE Xplore</span>
+            </div>
+            <p class="mb-4 text-lg" style="color: var(--text-primary);">
+                Published research applying deep learning to map regional media narratives and prioritize social themes in low-resource languages.
+            </p>
+            <a href="https://ieeexplore.ieee.org/document/YOUR_ID" target="_blank" class="text-sm font-bold flex items-center hover:underline" style="color: var(--accent-main);">
+                Read Publication <i data-lucide="external-link" class="w-4 h-4 ml-1"></i>
+            </a>
+        </div>
+    </div>
+</section>
+
+            <section id="education-section" class="page-content py-10" style="display: none;">
+                <h2 class="text-4xl font-bold text-center mb-12" style="color: var(--accent-main);">Education</h2>
+                <div class="max-w-4xl mx-auto space-y-8">
+                    <div class="card-hover card p-6 rounded-xl transition-all duration-300 transform">
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <h3 class="text-2xl font-bold" style="color: var(--accent-main);">B.E/B.Tech Computer Science and Engineering</h3>
+                                <p class="text-xl" style="color: var(--text-primary);">Amrita School of Engineering, Bengaluru</p>
+                            </div>
+                            <p class="text-md font-semibold text-gray-500 mt-1">Aug 2020 - Jun 2024</p>
+                        </div>
+                    </div>
+                    
+                    <div class="card-hover card p-6 rounded-xl transition-all duration-300 transform">
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <h3 class="text-2xl font-bold" style="color: var(--accent-main);">UPSC Civil Services Examination Preparation</h3>
+                                <p class="text-xl" style="color: var(--text-primary);">Self-Study & Focused Domain Acquisition (Optional : Sociology)</p>
+                            </div>
+                            <p class="text-md font-semibold text-gray-500 mt-1">2024 - 2026</p>
+                        </div>
+                        <p class="mt-2 text-md" style="color: var(--text-secondary);">Gained in-depth knowledge in: Indian Economy, Public Policy, Governance, and Technology Sector.</p>
+                    </div>
+                </div>
+            </section>
+
+        </div>
+
+    </main>
+
+    <footer class="py-8 border-t text-center text-sm" style="border-color: var(--bg-secondary); color: var(--text-secondary);">
+        &copy; 2025 P. Subramanyam Reddy. All rights reserved. Built with passion and data.
+    </footer>
+
+    <div id="image-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-80 hidden transition-opacity duration-300">
+        <div class="relative max-w-4xl max-h-[90vh] p-4"> <button id="close-modal" class="absolute top-0 right-0 m-4 text-white text-3xl font-bold p-2 z-50 hover:text-gray-300 transition-colors bg-black bg-opacity-50 rounded-full">
+                <i data-lucide="x"></i>
+            </button>
+            <img id="modal-image" src="" alt="Full-size profile photo" class="max-w-full max-h-full object-contain rounded-xl shadow-2xl">
+        </div>
+    </div>
+
+
+    <script>
+        // ----------------------------------------------------
+        // 1. Theme Toggle (Day/Night Mode)
+        // ----------------------------------------------------
+        const themeToggle = document.getElementById('theme-toggle');
+        const themeIcon = document.getElementById('theme-icon');
+
+        const isSystemDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+        let currentTheme = localStorage.getItem('theme') || (isSystemDark ? 'dark' : 'light');
+
+        const applyTheme = (theme) => {
+            const body = document.body;
+            if (theme === 'dark') {
+                body.classList.add('dark');
+                themeIcon.setAttribute('data-lucide', 'sun');
+            } else {
+                body.classList.remove('dark');
+                themeIcon.setAttribute('data-lucide', 'moon');
+            }
+            // Re-render icons after changing the theme
+            lucide.createIcons();
+            // Update chart colors on theme change
+            if (window.mySkillsChart) {
+                updateChartColors();
+            }
+        };
+
+        const toggleTheme = () => {
+            currentTheme = currentTheme === 'light' ? 'dark' : 'light';
+            localStorage.setItem('theme', currentTheme);
+            applyTheme(currentTheme);
+        };
+
+        themeToggle.addEventListener('click', toggleTheme);
+        // Apply initial theme
+        document.addEventListener('DOMContentLoaded', () => {
+            applyTheme(currentTheme);
+        });
+        
+        // ----------------------------------------------------
+        // 2. Block Navigation Logic
+        // ----------------------------------------------------
+        const navLinks = document.querySelectorAll('#main-nav a, #hero a[data-section-id]');
+        const contentSections = document.querySelectorAll('.page-content');
+
+        const showSection = (sectionId) => {
+            // Hide all content sections
+            contentSections.forEach(section => {
+                section.style.display = 'none';
+                section.classList.remove('active');
+            });
+
+            // Show the target section
+            const targetSection = document.getElementById(sectionId);
+            if (targetSection) {
+                targetSection.style.display = 'block';
+                targetSection.classList.add('active');
+                
+                // If the chart exists and we switch views, ensure it updates/renders correctly
+                if (window.mySkillsChart) {
+                    window.mySkillsChart.update();
+                }
+
+                // Scroll to the top of the content container for a clean switch
+                document.getElementById('content-container').scrollIntoView({ behavior: 'smooth' });
+            }
+
+            // Update active state in main navigation
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                // Ensure only navigation links are affected by the active class logic
+                if (link.getAttribute('data-section-id') === sectionId && link.closest('#main-nav')) {
+                    link.classList.add('active');
+                }
+            });
+        };
+
+        // Handle navigation clicks
+        navLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault(); // Prevent default link behavior
+                const sectionId = e.currentTarget.getAttribute('data-section-id');
+                if (sectionId) {
+                    showSection(sectionId);
+                }
+            });
+        });
+
+        // Set the initial visible section (About Me)
+        document.addEventListener('DOMContentLoaded', () => {
+            showSection('about-section');
+        });
+
+        // Handle logo click to return to the top
+        document.getElementById('home-button').addEventListener('click', (e) => {
+            e.preventDefault();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            showSection('about-section'); // Revert to the default view
+        });
+
+
+        // ----------------------------------------------------
+        // 3. Skills Chart (Chart.js)
+        // ----------------------------------------------------
+        const skillData = {
+            labels: [ 'Public Policy', 'Social Dynamics', 'Media Monitoring', 'Economic Frameworks', 'Strategic Visualization','Data Analytics', 'Computer science skills'],
+            proficiency: [9, 9, 8, 8, 9, 8, 8] // Proficiency on a scale of 1-10
+        };
+
+        let mySkillsChart = null;
+
+        // Function to get current CSS variable values
+        const getCssVar = (name) => {
+            return getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+        };
+
+        const updateChartColors = () => {
+            const accentMain = getCssVar('--accent-main');
+            const textPrimary = getCssVar('--text-primary');
+
+            if (mySkillsChart) {
+                // Dataset styling (the filled area and lines)
+                mySkillsChart.data.datasets[0].backgroundColor = accentMain + '50'; // 30% opacity
+                mySkillsChart.data.datasets[0].borderColor = accentMain;
+                mySkillsChart.data.datasets[0].pointBackgroundColor = accentMain;
+                mySkillsChart.data.datasets[0].pointBorderColor = getCssVar('--bg-primary');
+                
+                // Scale (Grid/Labels) styling
+                const secondaryColor = getCssVar('--text-secondary') + '50'; // Dimmed secondary color
+
+                // Setting point label color to the accent blue
+                mySkillsChart.options.scales.r.pointLabels.color = accentMain; 
+                mySkillsChart.options.scales.r.pointLabels.font.size = 14;
+                mySkillsChart.options.scales.r.grid.color = secondaryColor;
+                mySkillsChart.options.scales.r.angleLines.color = secondaryColor;
+                mySkillsChart.options.scales.r.pointLabels.font.family = getCssVar('font-family').split(',')[0].trim();
+                
+                mySkillsChart.update();
+            }
+        };
+
+        const createSkillsChart = () => {
+            const ctx = document.getElementById('skillsChart').getContext('2d');
+            
+            mySkillsChart = new Chart(ctx, {
+                type: 'radar',
+                data: {
+                    labels: skillData.labels,
+                    datasets: [{
+                        label: 'Proficiency Score (1-10)',
+                        data: skillData.proficiency,
+                        borderWidth: 2,
+                        fill: true,
+                        pointHoverBackgroundColor: getCssVar('--bg-primary'),
+                        pointHoverBorderColor: getCssVar('--accent-main'),
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        r: {
+                            angleLines: { display: true },
+                            grid: { circular: true },
+                            suggestedMin: 0,
+                            suggestedMax: 10,
+                            ticks: {
+                                display: false, // Hide the score numbers on the axis
+                                stepSize: 2
+                            },
+                            pointLabels: {
+                                display: true,
+                                font: {
+                                    size: 14,
+                                    weight: 'bold'
+                                }
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return context.label + ': ' + context.formattedValue + '/10';
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+            updateChartColors(); // Initial color update
+            window.mySkillsChart = mySkillsChart; // Make it globally accessible for updates
+        };
+
+
+        // ----------------------------------------------------
+        // 4. Image Modal Logic (Lightbox)
+        // ----------------------------------------------------
+        const avatarImage = document.getElementById('avatar-image');
+        const imageModal = document.getElementById('image-modal');
+        const modalImage = document.getElementById('modal-image');
+        const closeModal = document.getElementById('close-modal');
+
+        const hideModal = () => {
+            imageModal.classList.add('hidden');
+        };
+
+        if (avatarImage && imageModal && modalImage && closeModal) {
+            // Show modal on avatar click
+            avatarImage.addEventListener('click', () => {
+                modalImage.src = avatarImage.src; 
+                imageModal.classList.remove('hidden');
+                lucide.createIcons(); // Re-render the close icon (Lucide)
+            });
+
+            // Close modal on 'X' click
+            closeModal.addEventListener('click', hideModal);
+
+            // Close modal if user clicks on the dark background
+            imageModal.addEventListener('click', (e) => {
+                // Only close if the click target is the modal container itself
+                if (e.target.id === 'image-modal') {
+                    hideModal();
+                }
+            });
+            
+            // Close modal on Escape key press
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape' && !imageModal.classList.contains('hidden')) {
+                    hideModal();
+                }
+            });
+        }
+
+        // ----------------------------------------------------
+        // 5. Initialization (Wait for DOM load)
+        // ----------------------------------------------------
+        window.onload = function() {
+            lucide.createIcons(); // Initialize Lucide icons
+            createSkillsChart(); // Create the chart immediately since it is in the default section.
+
+            console.log("ACTION REQUIRED: Update the 'LinkedIn' button URL (href attribute) with the link to your actual profile. It is currently a placeholder.");
+            console.log("ACTION REQUIRED: Update the 'Download Resume' button URL (href attribute) with the link to your actual PDF resume. It is currently a placeholder.");
+        };
+    </script>
+
+</body>
+</html>
